@@ -125,22 +125,82 @@
 //Mongoose with node JS
 
 const mongoose = require("mongoose");
+const express = require("express");
+const app = express();
+app.use(express.json());
 
-const main = async () => {
-  await mongoose.connect("mongodb://localhost:27017/Barcelona");
-  const playerSchema = new mongoose.Schema(
-    {
-      name: String,
-      age: Number,
-    },
-    {
-      collection: "Barca_A",
-    }
-  );
+const PORT = 4500;
+mongoose.connect("mongodb://localhost:27017/Barcelona");
 
+const playerSchema = new mongoose.Schema(
+  {
+    name: String,
+    nation: String,
+    age: Number,
+  },
+  {
+    collection: "Barca_A",
+  }
+);
+
+//To insert data in the mongoDB
+const saveInMongoDB = async (name, nation, age) => {
   const playerModel = mongoose.model("Barca_A", playerSchema);
-  let data = new playerModel({ name: "Alba", age: 16 });
+  let data = new playerModel({ name: name, nation: nation, age: age });
   let result = await data.save();
   console.log(result);
+  return result;
 };
-main();
+// saveInMongoDB();
+
+//To read / find the record from the mongoDB
+// const readInMongoDB = async () => {
+//   const playerModel = await mongoose.model("Barca_A", playerSchema);
+//   const data = await playerModel.find({ name: "Iniesta" });
+//   console.log(data);
+//   return data;
+// };
+
+// readInMongoDB();
+
+//To update the data in the mongoDB
+// const updateInMongoDB = async () => {
+//   const playerModel = mongoose.model("Barca_A", playerSchema);
+//   let data = await playerModel.updateMany(
+//     {
+//       name: "Pique",
+//     },
+//     {
+//       // age: 21,
+//       nation: "CAT",
+//     }
+//   );
+// };
+// updateInMongoDB();
+
+// To delete the data in the mongoDB
+const deleteINMongoDB = async () => {
+  const playerModel = await mongoose.model("Barca_A", playerSchema);
+  const data = await playerModel.deleteOne({
+    name: "Valdes",
+    // name: {
+    //   $exists: true,
+    //   $eq:"Valdes",
+    // },
+  });
+};
+// deleteINMongoDB();
+app.get("/", async (req, res) => {
+  const result = await readInMongoDB();
+  res.json(result);
+});
+
+app.post("/", async (req, res) => {
+  const body = req.body;
+  // console.log(req);
+  console.log(body);
+  const result = await saveInMongoDB(body.name, body.nation, body.age);
+  res.json(result);
+});
+app.listen(PORT);
+console.log("Listening at port", PORT);
