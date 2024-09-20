@@ -202,56 +202,57 @@
 // console.log("Listening at port", PORT);
 
 // ----------------------------------------------------------------------------------
-const express = require("express");
-require("./config");
-const app = express();
-const player = require("./player");
-app.use(express.json());
-const PORT = 5000;
+//All the API's which needs to be get learned for playing with the dynamically data / manipulating the mongo DB
+// const express = require("express");
+// require("./config");
+// const app = express();
+// const player = require("./player");
+// app.use(express.json());
+// const PORT = 5000;
 
-//To add the data in the MOngoDB dynamically
-app.post("/create", async (req, res) => {
-  console.log(req.body);
-  const data = new player(req.body);
-  const result = await data.save();
-  res.send(result);
-});
+// //To add the data in the MongoDB dynamically
+// app.post("/create", async (req, res) => {
+//   console.log(req.body);
+//   const data = new player(req.body);
+//   const result = await data.save();
+//   res.send(result);
+// });
 
-//To get the data from the MongoDB
-app.get("/list", async (req, res) => {
-  const data = await player.find();
-  res.send(data);
-  console.log(data);
-});
+// //To get the data from the MongoDB
+// app.get("/list", async (req, res) => {
+//   const data = await player.find();
+//   res.send(data);
+//   console.log(data);
+// });
 
-//To delete the data from the MongoDB(dynamically)
-app.delete("/delete/:_id", async (req, res) => {
-  const data = await player.deleteOne(req.params);
-  console.log(req.params);
-  res.send(data);
-});
+// //To delete the data from the MongoDB(dynamically)
+// app.delete("/delete/:_id", async (req, res) => {
+//   const data = await player.deleteOne(req.params);
+//   console.log(req.params);
+//   res.send(data);
+// });
 
-//To update the data in the Mongo DB (dynamically)
-app.put("/update/:_id", async (req, res) => {
-  const data = await player.updateOne(req.params, { $set: req.body });
-  // console.log(data);
-  console.log(req.params);
-  res.send(data);
-});
+// //To update the data in the Mongo DB (dynamically)
+// app.put("/update/:_id", async (req, res) => {
+//   const data = await player.updateOne(req.params, { $set: req.body });
+//   // console.log(data);
+//   console.log(req.params);
+//   res.send(data);
+// });
 
-//Search API in the MongoDB
-app.get("/search/:key", async (req, res) => {
-  console.log(req.params.key);
-  const data = await player.find({
-    $or: [
-      { name: { $regex: req.params.key } },
-      { nation: { $regex: req.params.key } },
-      // { age: { $regex: req.params.key } },
-    ],
-  });
-  res.send(data);
-  console.log(data);
-});
+// //Search API in the MongoDB
+// app.get("/search/:key", async (req, res) => {
+//   console.log(req.params.key);
+//   const data = await player.find({
+//     $or: [
+//       { name: { $regex: req.params.key } },
+//       { nation: { $regex: req.params.key } },
+//       // { age: { $regex: req.params.key } },
+//     ],
+//   });
+//   res.send(data);
+//   console.log(data);
+// });
 
 //for searching teh age as well using the key in the mongo DB
 /*
@@ -280,5 +281,74 @@ app.get("/search/:key", async (req, res) => {
   console.log(data);
 });
 */
-app.listen(5000);
-console.log("App listening at", PORT);
+// app.listen(5000);
+// console.log("App listening at", PORT);
+
+// ---------------------------------------------------------------------------
+// const express = require("express");
+// const app = express();
+// const PORT = 5000;
+// const multer = require("multer");
+
+// //To upload a file in the directory you have created locally
+// const upload = multer({
+//   storage: multer.diskStorage({
+//     destination: function (req, file, cb) {
+//       cb(null, "uploads");
+//     },
+//     filename: function (req, file, cb) {
+//       cb(null, file.filename + "_" + Date.now() + ".jpg");
+//     },
+//   }),
+// }).single("user_file");
+
+// app.post("/upload", upload, (req, res) => {
+//   res.send("File uploads!!!");
+// });
+
+// app.listen(PORT);
+// console.log("Server listening at", PORT);
+// ----------------------------------------------------------------------
+//OS Module
+// const os = require("os");
+// console.log(os);
+// console.log(os.arch());//System architecture
+// console.log(os.freemem() / (1024 * 1024 * 1024) + "GB"); //Free Memory
+// console.log(os.hostname()); //Check Hostname
+// console.log(os.platform()); //Check platform
+// console.log(os.userInfo()); //To check the user info
+
+// ---------------------------------------------------------------------
+//Event and Event emitter
+
+const express = require("express");
+const EventEmitter = require("events");
+const app = express();
+const PORT = 5000;
+const event = new EventEmitter();
+
+let count = 0;
+event.on("CountAPI", () => {
+  count++;
+  console.log("Home / event got called on the console " + count + " times");
+});
+app.get("/", (req, res) => {
+  res.send("Home / API Called!");
+  event.emit("CountAPI");
+});
+
+app.get("/search", (req, res) => {
+  res.send("Search API Called!");
+  event.emit("CountAPI");
+
+  // console.log("Home / event got called on the console " + count + " times");
+});
+
+app.get("/update", (req, res) => {
+  res.send("Update API Called!");
+  event.emit("CountAPI");
+  // console.log("Home / event got called on the console " + count + " times");
+});
+
+app.listen(PORT);
+console.log("App listen at ", PORT);

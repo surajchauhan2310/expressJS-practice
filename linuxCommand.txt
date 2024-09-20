@@ -1,0 +1,174 @@
+Linux Command Cheatsheet for DevOps Professionals
+
+File and Directory Management
+
+1)ls
+List directory contents.
+
+ls -la /path/to/dir
+
+2)cp
+Copy files or directories.
+
+cp source.txt destination.txt
+cp -r src_dir/ dest_dir/
+
+3)mv
+Move or rename files or directories.
+
+mv oldname.txt newname.txt
+mv dir1/ dir2/
+
+4)rm
+Remove files or directories.
+
+rm file.txt
+rm -r dir/
+
+5)find
+Search for files and directories.
+
+find /path -name "*.log"
+find /path -type f -mtime -7
+
+Permissions
+chmod
+Change file permissions.
+
+chmod 755 script.sh
+chmod +x file.sh
+chown
+Change file owner and group.
+
+chown user:group file.txt
+chown -R user:group dir/
+System Monitoring
+top
+Display real-time system summary.
+
+top
+htop
+Interactive process viewer (install via package manager).
+
+htop
+df
+Show disk space usage.
+
+df -h
+du
+Estimate file and directory space usage.
+
+du -sh /path/to/dir
+free
+Display memory usage.
+
+free -m
+Networking
+ping
+Test network connectivity.
+
+ping google.com
+netstat
+Network statistics and connections.
+
+netstat -tuln
+curl
+Transfer data from or to a server.
+
+curl -O http://example.com/file
+curl -I http://example.com
+ifconfig / ip
+Display or configure network interfaces.
+
+ifconfig
+ip addr show
+Process Management
+ps
+Report a snapshot of current processes.
+
+ps aux
+top
+Display and manage processes.
+
+top
+kill
+Send signals to processes.
+
+kill -9 1234
+pkill
+Kill processes by name.
+
+pkill firefox
+systemctl
+Manage systemd services.
+
+systemctl status apache2
+systemctl restart docker
+Package Management
+apt-get / apt
+Debian-based package management.
+
+sudo apt-get update
+sudo apt-get install package
+sudo apt-get upgrade
+yum / dnf
+Red Hat-based package management.
+
+sudo yum install package
+sudo dnf update
+rpm
+RPM package manager.
+
+rpm -ivh package.rpm
+rpm -qa | grep package
+Archiving and Compression
+tar
+Archive files.
+
+tar -cvf archive.tar /path/to/dir
+tar -xvf archive.tar
+gzip / gunzip
+Compress/decompress files.
+
+gzip file.txt
+gunzip file.txt.gz
+zip / unzip
+Zip/unzip files.
+
+zip archive.zip file1 file2
+unzip archive.zip
+Searching and Text Processing
+grep
+Search text using patterns.
+
+grep "pattern" file.txt
+grep -r "pattern" /path/to/dir
+awk
+Pattern scanning and processing.
+
+awk '{print $1}' file.txt
+sed
+Stream editor for filtering and transforming text.
+
+sed 's/old/new/g' file.txt
+Git Commands
+git clone
+Clone a repository.
+
+git clone https://github.com/user/repo.git
+git pull
+Fetch and integrate changes.
+
+git pull origin main
+git push
+Update remote repository with local changes.
+
+git push origin main
+git status
+Show the working tree status.
+
+git status
+git commit
+Record changes to the repository.
+
+git commit -m "Commit message"
